@@ -9,6 +9,7 @@ import React, { useEffect } from "react";
 import {
   Pressable,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -29,10 +30,14 @@ const LoginScreen = () => {
   const [request, response, promptAsync] = AuthSession.useAuthRequest(
     {
       clientId: "5c88658c75e54dfebd4ab39432212460",
-      scopes: ["user-read-email", "playlist-modify-public"],
+      scopes: [
+        "user-read-email",
+        "playlist-modify-public",
+        "user-read-recently-played",
+      ],
       usePKCE: false,
       redirectUri: AuthSession.makeRedirectUri({
-        scheme: "exp://",
+        scheme: "exp://" || "https://",
       }),
     },
     discovery
@@ -42,7 +47,7 @@ const LoginScreen = () => {
   const exchangeCodeForToken = async (code) => {
     const tokenUrl = "https://accounts.spotify.com/api/token";
     const redirectUri = AuthSession.makeRedirectUri({
-      scheme: "exp://",
+      scheme: "exp://" || "https://",
     });
 
     const response = await fetch(tokenUrl, {
@@ -119,62 +124,64 @@ const LoginScreen = () => {
   //!Render
   return (
     <LinearGradient colors={["#040306", "#131624"]} style={{ flex: 1 }}>
-      <SafeAreaView>
-        <View style={{ height: 80 }} />
-        <Entypo
-          style={{ textAlign: "center" }}
-          name="spotify"
-          size={80}
-          color="white"
-        />
-        <Text style={styles.textHeader}>
-          Millions of Songs Free on Spotify!
-        </Text>
-        <View style={{ height: 70 }} />
-        <Pressable onPress={() => promptAsync()}>
-          <Text style={styles.textSignIn}>Sign In with Spotify</Text>
-        </Pressable>
-
-        <Text style={styles.textOrUsing}>Or Using</Text>
-
-        <Formik
-          initialValues={{ email: "", password: "" }}
-          onSubmit={(values) => {
-            console.log(values);
-          }}
-        >
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
-            <>
-              <View style={styles.styleInput}>
-                <TextInput
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  value={values.email}
-                  placeholder="Email"
-                />
-              </View>
-              <View style={styles.styleInput}>
-                <TextInput
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  value={values.password}
-                  placeholder="Password"
-                />
-              </View>
-              <View>
-                <Pressable onPress={handleSubmit}>
-                  <Text style={styles.styleButton}>Sign In</Text>
-                </Pressable>
-              </View>
-            </>
-          )}
-        </Formik>
-        <View>
-          <Pressable onPress={() => navigation.navigate("Signup")}>
-            <Text style={styles.styleButton}>Sign Up</Text>
+      <ScrollView>
+        <SafeAreaView>
+          <View style={{ height: 80 }} />
+          <Entypo
+            style={{ textAlign: "center" }}
+            name="spotify"
+            size={80}
+            color="white"
+          />
+          <Text style={styles.textHeader}>
+            Millions of Songs Free on Spotify!
+          </Text>
+          <View style={{ height: 70 }} />
+          <Pressable onPress={() => promptAsync()}>
+            <Text style={styles.textSignIn}>Sign In with Spotify</Text>
           </Pressable>
-        </View>
-      </SafeAreaView>
+
+          <Text style={styles.textOrUsing}>Or Using</Text>
+
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            onSubmit={(values) => {
+              console.log(values);
+            }}
+          >
+            {({ handleChange, handleBlur, handleSubmit, values }) => (
+              <>
+                <View style={styles.styleInput}>
+                  <TextInput
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                    placeholder="Email"
+                  />
+                </View>
+                <View style={styles.styleInput}>
+                  <TextInput
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    value={values.password}
+                    placeholder="Password"
+                  />
+                </View>
+                <View>
+                  <Pressable onPress={handleSubmit}>
+                    <Text style={styles.styleButton}>Sign In</Text>
+                  </Pressable>
+                </View>
+              </>
+            )}
+          </Formik>
+          <View>
+            <Pressable onPress={() => navigation.navigate("Signup")}>
+              <Text style={styles.styleButton}>Sign Up</Text>
+            </Pressable>
+          </View>
+        </SafeAreaView>
+      </ScrollView>
     </LinearGradient>
   );
 };

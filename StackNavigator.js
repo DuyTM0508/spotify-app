@@ -59,7 +59,7 @@ function TabNavigator() {
             focused ? (
               <Ionicons name="person-sharp" size={24} color="white" />
             ) : (
-              <Ionicons name="person-outline" size={24} color="black" />
+              <Ionicons name="person-outline" size={24} color="white" />
             ),
         }}
       />
